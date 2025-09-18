@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Tiled.Renderers;
@@ -378,29 +379,24 @@ namespace LETHIMCOOK3.Screen
                 onQuest = randomQuest.Next(0, 2) == 0;
                 if (onQuest && !onRandom)
                 {
-                    for (int i = 0; i < 1; i++)
+                    var questIndices = new HashSet<int>();
+                    while (questIndices.Count < 3 && RestauarntScreen.QuestList.Count > 0)
                     {
-                        getQuest = randomQuest.Next(0, RestauarntScreen.QuestList.Count);
-                        getQuest2 = randomQuest.Next(0, RestauarntScreen.QuestList.Count);
-                        getQuest3 = randomQuest.Next(0, RestauarntScreen.QuestList.Count);
-                        if (getQuest == getQuest2 || getQuest == getQuest3)
-                        {
-                            getQuest = randomQuest.Next(0, RestauarntScreen.QuestList.Count);
-                        }
-                        if (getQuest2 == getQuest3 || getQuest2 == getQuest)
-                        {
-                            getQuest2 = randomQuest.Next(0, RestauarntScreen.QuestList.Count);
-                        }
-                        if (getQuest3 == getQuest2 || getQuest == getQuest3)
-                        {
-                            getQuest3 = randomQuest.Next(0, RestauarntScreen.QuestList.Count);
-                        }
-                        //RestauarntScreen.QuestList[getQuest]. = true;
-                        Console.WriteLine(RestauarntScreen.QuestList);
-                        Console.WriteLine(getQuest);
-                        Console.WriteLine(getQuest2);
-                        Console.WriteLine(getQuest3);
+                        questIndices.Add(randomQuest.Next(0, RestauarntScreen.QuestList.Count));
                     }
+
+                    if (questIndices.Count >= 3)
+                    {
+                        var questArray = questIndices.ToArray();
+                        getQuest = questArray[0];
+                        getQuest2 = questArray[1];
+                        getQuest3 = questArray[2];
+                    }
+
+                    Console.WriteLine(RestauarntScreen.QuestList);
+                    Console.WriteLine(getQuest);
+                    Console.WriteLine(getQuest2);
+                    Console.WriteLine(getQuest3);
                     onRandom = true;
                 }
             } else paper = false;
